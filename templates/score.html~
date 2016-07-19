@@ -1,0 +1,9 @@
+<html>
+	<body>
+		{{ value}}
+		{{ uName }}
+		<br>
+		<a href="/game">play again ? </a> <br>
+		<a href="/"> go back home</a><br>
+	</body>
+</html>

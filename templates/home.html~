@@ -1,0 +1,21 @@
+
+
+<html>
+<head>
+<title> homepage </title>
+</head>
+<body>
+this is the homepage. Welcome {{uName}}
+<br>
+<a href="/opensignup"> sign up </a>
+<br>
+<a href="/opensignin">sign in </a>
+<br>
+<a href="/game"> play rock paper and scissors vs AI </a>
+<br>
+<a href="/showScore"> show score </a>
+<br>
+<a href="/gamePvP">  play rock paper and scissors vs another player </a>
+
+</body>
+</html>

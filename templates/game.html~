@@ -1,0 +1,22 @@
+<html>
+<head>
+	<title> Sign Up </title>
+</head>
+<body>
+
+
+	<form action="/playgame" , method="POST">
+	<div>
+	  <input type="radio" name="playerOpt" value="rock"> ROCK<br>
+	  <input type="radio" name="playerOpt" value="paper"> PAPER<br>
+	  <input type="radio" name="playerOpt" value="scissors"> SCISSORS<br>
+	  <input type="text" name="uName" value= {{ uName }}> 
+	<input type = "submit" value = "submit">
+	</div>
+	</form>
+	
+
+
+
+</body>
+</html>

@@ -1,0 +1,16 @@
+<html>
+	<body>
+		
+		{{ uName }} ,{{ value}}
+		<br>
+		your current score is : {{currentScore}}
+		<br>
+		{% for x in resultList %}
+		 {{x}} <br>
+		{% endfor %}
+		{{ val }}
+
+		<a href="/game">play again ? </a> <br>
+		<a href="/"> go back home</a><br>
+	</body>
+</html>

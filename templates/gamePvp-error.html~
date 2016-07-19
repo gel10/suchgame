@@ -1,0 +1,32 @@
+<html>
+<head>
+	<title> ... </title>
+</head>
+<body>
+	Users in this Room:  <br>
+		{% for x in noDupes %}
+			 {{x}} <br>
+		{% endfor %}
+
+		{% for x in users %}
+			 {{x}} <br>
+		{% endfor %}
+	
+	{{message }}
+	
+<br>
+	<form action="/gamePvpPlay" , method="POST">
+		<div>
+		
+		<input type="hidden" name="uName" value= {{ uName }}> 
+		<input type="hidden" name="roomNo" value= {{ roomNo }}> 
+		
+		{% for x in resultList %}
+			<input type="hidden" name= "playerOpt" value= {{x}}> 
+		{% endfor %}
+		<input type = "submit" value = "submit">
+		</div>
+	</form>
+
+</body>
+</html>

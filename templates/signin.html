@@ -1,0 +1,24 @@
+<html>
+<head>
+	<title> Sign Up </title>
+</head>
+<body>
+
+     <form action = "{{url_for('signin')}}" method = "POST">
+		
+		<div>
+			<label> Username </label>
+			<input type= "text" name = "uName"  min= "3" max = "10" required/> 
+		</div>
+		
+		
+		<div>
+			<label> Password </label>
+			<input type= "password" name = "uPass" min= "8" max = "15" required/> 
+		</div>
+		
+		
+         <input type = "submit" value = "submit" /><br>
+      </form>
+</body>
+</html>

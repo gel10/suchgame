@@ -1,0 +1,18 @@
+<html>
+<head>
+	<title> Sign Up </title>
+</head>
+<body>
+
+   <form action="/game" , method="POST">
+<div>
+<input type="button" name="scissors" value= "scissors">
+<input type="button" name="rock" value="rock">
+<input type="button" name="paper" value="paper">
+<input type = "submit" value = "submit">
+</div>
+</form>
+
+
+</body>
+</html>
