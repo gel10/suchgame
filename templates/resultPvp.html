@@ -1,0 +1,18 @@
+<html>
+	<body>
+		
+		Username : {{ uName }} 
+		<br>
+		
+		<br>
+
+		{% for value in resultList %}
+			{{"%s , %s " % value}}  <br>
+		{% endfor %}
+
+		 the winner is:  {{ val }} <br>
+
+		<a href="/game2">play again ? </a> <br>
+		<a href="/"> go back home</a><br>
+	</body>
+</html>
