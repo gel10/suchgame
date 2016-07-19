@@ -1,3 +1,9 @@
+"""" 
+THIS CODE IS UNFINISHED. 
+THIS IS NOT AN OPTIMIZED CODE.
+WILL FIX IT NEXT TIME :)
+"""
+
 from flask import *
 from random import * 
 import hashlib
@@ -213,6 +219,7 @@ def gamePvpPlay():
 	if mongo.db.gameJack2.find({'roomNo' : roomNo}).count() == 1:
 		message = "waiting for the other player to respond..."
 		playerOpt = mongo.db.gameJack2.find({'uName' : uNameCookie , 'roomNo': roomNo} , {'playerOpt' :1 , '_id': 0})
+			    
 		resultList = []
 		for x in playerOpt:
 			val = str(x[u'playerOpt'])
@@ -232,30 +239,130 @@ def gamePvpPlay():
 		for x in result:
 			val = str(x[u'playerOpt'])
 			resultList.append(val)
-	
-		if (len(resultList) == 2):
-			if resultList[0] == resultList[1]:
-				value = "it's a tie"
-			elif resultList[0] == "rock":
-				if resultList[1] == "paper":		
-					value = "you lose!"
-				elif resultList[1] == "scissors":
-					value = "you win!"
-					score += 1
-					winner = mongo.db.gameJack2.aggregate([{'$match' : { 'playerOpt' : 'rock' , 'roomNo' : roomNo}}]);
-				
-					for x in winner:
-						val= str(x[u'uName'])
-						mongo.db.gameJack2Res.insert(
-		    {'uName':val, 'roomNo': roomNo , 'score': 1}      
-		)
-					return render_template("result.html", uName = uName ,resultList = resultList , val = val)
-		  			
-		else:
-			return render_template("result.html")
+		
+		#prints player names  in the corresponding room and the value they picked (rock paper or scissors) 
+		playerResults = mongo.db.gameJack2.find({'roomNo' : roomNo}, {'playerOpt': 1 , '_id':0 , 'uName': 1})
+		playerOpt = []
+		playerNames = []
+		NameOfWinner = ""
+		for x in playerResults:
+			value = str(x[u'playerOpt'])
+			playerOpt.append(value)
 
+		playerResults2 = mongo.db.gameJack2.find({'roomNo' : roomNo}, {'playerOpt': 1 , '_id':0 , 'uName': 1})
+		for y in playerResults2:
+			name = str(y[u'uName']) 
+			playerNames.append(name)
+
+		resultList = zip(playerNames , playerOpt)
+		
+		for z in resultList:
+			print "%s , %s" % z
+
+		
+		if (len(resultList) == 2):
+			if playerOpt[0] == playerOpt[1]:
+				value = "it's a tie"
+				return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = "draw!")
+			elif playerOpt[0] == 'rock':
+				if playerOpt[1] == 'paper': #winner  playerNames[1] perspective
+					NameOfWinner = playerNames[1]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+				elif playerOpt[1] == 'scissors': #loser
+					NameOfWinner = playerNames[0]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+			elif playerOpt[0] == 'paper':
+				if playerOpt[1] == 'scissors': #winner playerNames[1] perspective
+					NameOfWinner = playerNames[1]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+				elif playerOpt[1] == 'rock': #loser
+					NameOfWinner = playerNames[0]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+			elif playerOpt[0] == 'scissors':
+				if playerOpt[1] == 'rock': #winner playerNames[1] perspective
+					NameOfWinner = playerNames[1]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+				elif playerOpt[1] == 'paper': #loser
+					NameOfWinner = playerNames[0]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+		
+####################GAME MECHANICS###################
+@app.route('/gamePvpPlayResult' , methods=['POST'])
+def gamePvpPlayResult():		
+	playerOpt = request.form['playerOpt']
+	roomNo = request.form['roomNo']
+	uName = request.form['uName']
+	uNameCookie  = request.cookies.get('uName')
 	
 	
+	##########REMEMBER TO PUT THIS INTO A FUNCTION AND JUST CALL IT!################
+	if mongo.db.gameJack2.find({'roomNo' : roomNo}).count() == 1:
+		message = "waiting for the other player to respond..."
+		playerOpt = mongo.db.gameJack2.find({'uName' : uNameCookie , 'roomNo': roomNo} , {'playerOpt' :1 , '_id': 0})
+			    
+		resultList = []
+		for x in playerOpt:
+			val = str(x[u'playerOpt'])
+			resultList.append(val)
+
+		return render_template('gamePvp-error.html' , roomNo = roomNo, uName = uName , message = message , resultList = resultList)
+	else:
+		#gets the value (rock, paper or scissors) the user picked 
+		mongo.db.gameJack2.find({'uName': uNameCookie , 'roomNo': roomNo} , {'playerOpt':1 , '_id':0})
+
+		#gets all the value(rock, paper or scissors) picked by all user in the room
+		result = mongo.db.gameJack2.find({'roomNo': roomNo} , {'playerOpt':1 , '_id':0})
+
+		#compare = mongo.db.gameJack2.find({'roomNo': roomNo} , {'_id':0})
+		resultList = []
+		for x in result:
+			val = str(x[u'playerOpt'])
+			resultList.append(val)
+		
+		#prints player names  in the corresponding room and the value they picked (rock paper or scissors) 
+		playerResults = mongo.db.gameJack2.find({'roomNo' : roomNo}, {'playerOpt': 1 , '_id':0 , 'uName': 1})
+		playerOpt = []
+		playerNames = []
+		NameOfWinner = ""
+		for x in playerResults:
+			value = str(x[u'playerOpt'])
+			playerOpt.append(value)
+
+		playerResults2 = mongo.db.gameJack2.find({'roomNo' : roomNo}, {'playerOpt': 1 , '_id':0 , 'uName': 1})
+		for y in playerResults2:
+			name = str(y[u'uName']) 
+			playerNames.append(name)
+		
+		resultList = zip(playerNames, playerOpt)
+		for z in resultList:
+			print "%s , %s" %z 
+
+		if (len(resultList) == 2):
+			if playerOpt[0] == playerOpt[1]:
+				value = "it's a tie"
+				return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = "draw!")
+			elif playerOpt[0] == 'rock':
+				if playerOpt[1] == 'paper': #winner  playerNames[1] perspective
+					NameOfWinner = playerNames[1]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+				elif playerOpt[1] == 'scissors': #loser
+					NameOfWinner = playerNames[0]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+			elif playerOpt[0] == 'paper':
+				if playerOpt[1] == 'scissors': #winner playerNames[1] perspective
+					NameOfWinner = playerNames[1]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+				elif playerOpt[1] == 'rock': #loser
+					NameOfWinner = playerNames[0]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+			elif playerOpt[0] == 'scissors':
+				if playerOpt[1] == 'rock': #winner playerNames[1] perspective
+					NameOfWinner = playerNames[1]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+				elif playerOpt[1] == 'paper': #loser
+					NameOfWinner = playerNames[0]
+					return render_template("resultPvp.html", uName = uName ,resultList = resultList , val = NameOfWinner)
+		
 				
 
 ###########################RUN THE APP##########################

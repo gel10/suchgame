@@ -15,7 +15,7 @@
 	{{message }}
 	
 <br>
-	<form action="/gamePvpPlay" , method="POST">
+	<form action="/gamePvpPlayResult" , method="POST">
 		<div>
 		
 		<input type="hidden" name="uName" value= {{ uName }}> 
